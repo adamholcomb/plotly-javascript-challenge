@@ -23,7 +23,7 @@ function Charts(ID) {
         var otulabels = samp.otu_labels.slice(0, 10);
         console.log(otulabels)
 
-        var metadata = data.metadata.filter(md => md.id.toString() == ID)[0]
+        var metadata = data.metadata.filter(md => md.id == ID)[0]
         console.log(metadata)
 
 
@@ -83,8 +83,11 @@ function table(ID) {
     d3.json("Data/samples.json").then((data1)=> {
         
         // Filter down to data 
-        var metadata = data1.metadata.filter(md => md.id.toString() == ID)[0]
+        var metadata = data1.metadata.filter(md => md.id == ID)[0]
 
+        // Insert data
+        Object.entries(metadata).forEach(([key, value]) => {
+            datatable.append("p").text(`${key.toUpperCase()}: ${value}`);
         
 
 
