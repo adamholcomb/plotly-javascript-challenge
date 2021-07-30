@@ -23,6 +23,9 @@ function Charts(ID) {
         var otulabels = samp.otu_labels.slice(0, 10);
         console.log(otulabels)
 
+        var metadata = data.metadata.filter(md => md.id.toString() == ID)[0]
+        console.log(metadata)
+
 
         // Create bar graph
         var bar = [{
@@ -48,9 +51,19 @@ function Charts(ID) {
         Plotly.newPlot("bubble", bubble);
     });
 
-  }  
-// Charts(940);
+}
 
+// Create data table
+function table(ID) {
+    // Read in data
+    d3.json("Data/samples.json").then((data1)=> {
+        
+        // Filter down to data 
+        var metadata = data1.metadata.filter(md => md.id.toString() == ID)[0]
+        console.log(metadata)
+    })
+
+}
 
 // Populate dropdown menu
 function init() {
@@ -75,7 +88,6 @@ function optionChanged(ID) {
 
 init();
 
-        
         //--------------------------------------------------------
         // Get sample values
         // var samplevalues = samples.map(samples => samples.sample_values)
