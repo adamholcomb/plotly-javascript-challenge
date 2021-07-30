@@ -32,8 +32,22 @@ function Charts(ID) {
             type:"bar",
             orientation: "h",
         }];
-        Plotly.newPlot("bar", bar);        
-      });
+        Plotly.newPlot("bar", bar);
+
+        // Create bubble chart
+        var bubble = [{
+            x: samp.otu_ids,
+            y: samp.sample_values,
+            mode: "markers",
+            marker: {
+                size: samp.sample_values,
+                color: samp.otu_ids
+            },
+            text: samp.otu_labels
+        }];
+        Plotly.newPlot("bubble", bubble);
+    });
+
   }  
 // Charts(940);
 
