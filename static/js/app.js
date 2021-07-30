@@ -66,18 +66,21 @@ function init() {
 
         // Display the changes
         Charts(data.names[0]);
+        Table(data.names[0]);
     });
 }
 
 
 function optionChanged(ID) {
     Charts(ID);
+    Table(ID);
 }
 
 // Populate data table
-function table(ID) {
+function Table(ID) {
     //Select datatable
     let datatable = d3.select("#sample-metadata")
+    datatable.html("")
     
     // Get demographic data
     d3.json("Data/samples.json").then((data1)=> {
@@ -87,12 +90,9 @@ function table(ID) {
 
         // Insert data
         Object.entries(metadata).forEach(([key, value]) => {
-            datatable.append("p").text(`${key.toUpperCase()}: ${value}`);
-        
-
-
+            datatable.append("p").text(`${key}: ${value}`)
+        })
     })
-
 }
 
 init();
