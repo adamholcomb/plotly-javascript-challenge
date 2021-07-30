@@ -32,16 +32,34 @@ function Charts(ID) {
             type:"bar",
             orientation: "h",
         }];
-        Plotly.newPlot("bar", bar);
-
-
-        
+        Plotly.newPlot("bar", bar);        
       });
   }  
-Charts(940);
+// Charts(940);
 
 
+// Populate dropdown menu
+function init() {
+    // Select dropdown menu 
+    let dropdownmenu = d3.select("#selDataset")
 
+    // Get IDs 
+    d3.json("Data/samples.json").then(data => {
+        data.names.forEach(name => {
+            dropdownmenu.append("option").text(name).property("value")
+        });
+
+        // Display the changes
+        Charts(data.names[0]);
+    });
+}
+
+function optionChanged(ID) {
+    Charts(ID);
+}
+
+
+init();
 
         
         //--------------------------------------------------------
