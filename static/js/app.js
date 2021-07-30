@@ -50,20 +50,8 @@ function Charts(ID) {
         }];
         Plotly.newPlot("bubble", bubble);
     });
-
 }
 
-// Create data table
-function table(ID) {
-    // Read in data
-    d3.json("Data/samples.json").then((data1)=> {
-        
-        // Filter down to data 
-        var metadata = data1.metadata.filter(md => md.id.toString() == ID)[0]
-        console.log(metadata)
-    })
-
-}
 
 // Populate dropdown menu
 function init() {
@@ -81,10 +69,28 @@ function init() {
     });
 }
 
+
 function optionChanged(ID) {
     Charts(ID);
 }
 
+// Populate data table
+function table(ID) {
+    //Select datatable
+    let datatable = d3.select("#sample-metadata")
+    
+    // Get demographic data
+    d3.json("Data/samples.json").then((data1)=> {
+        
+        // Filter down to data 
+        var metadata = data1.metadata.filter(md => md.id.toString() == ID)[0]
+
+        
+
+
+    })
+
+}
 
 init();
 
