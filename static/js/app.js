@@ -1,6 +1,7 @@
 
 // Create charts function
 function Charts(ID) {
+
     // Read in data
     d3.json("Data/samples.json").then((data)=> {
         console.log(data)
@@ -23,9 +24,7 @@ function Charts(ID) {
         var otulabels = samp.otu_labels.slice(0, 10);
         console.log(otulabels)
 
-        var metadata = data.metadata.filter(md => md.id == ID)[0]
-        console.log(metadata)
-
+        //----------------------------------------------------------------
 
         // Create bar graph
         var bar = [{
@@ -36,6 +35,8 @@ function Charts(ID) {
             orientation: "h",
         }];
         Plotly.newPlot("bar", bar);
+
+        //----------------------------------------------------------------
 
         // Create bubble chart
         var bubble = [{
@@ -49,9 +50,46 @@ function Charts(ID) {
             text: samp.otu_labels
         }];
         Plotly.newPlot("bubble", bubble);
+
+        //----------------------------------------------------------------
+
+        // Get wash frequency
+        var metadata = data.metadata.filter(md => md.id == ID)[0]
+        console.log(metadata)
+        var wfreq = metadata.wfreq
+        console.log(wfreq)
+
+        //----------------------------------------------------------------
+        
+        // Create gauge
+        var gauge = [
+            {
+              domain: { x: [0, 1], y: [0, 1] },
+              value: wfreq,
+              title: { text: "Wash Frequency" },
+              type: "indicator",
+              mode: "gauge+number",
+              gauge: {
+                axis: { range: [null, 9] },
+                steps: [
+                  { range: [0, 1], color: "lightgreen2" },
+                  { range: [1, 2], color: "lightgreen1" }
+                ],
+                threshold: {
+                  line: { color: "red", width: 4 },
+                  thickness: 0.75,
+                  value: 490
+                }
+              }
+            }
+          ];
+          
+          var layout = { width: 600, height: 450, margin: { t: 0, b: 0 } };
+          Plotly.newPlot('gauge', gauge, layout);
     });
 }
 
+//----------------------------------------------------------------
 
 // Populate dropdown menu
 function init() {
@@ -70,11 +108,14 @@ function init() {
     });
 }
 
+//----------------------------------------------------------------
 
 function optionChanged(ID) {
     Charts(ID);
     Table(ID);
 }
+
+//----------------------------------------------------------------
 
 // Populate data table
 function Table(ID) {
