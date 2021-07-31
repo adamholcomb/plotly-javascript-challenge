@@ -4,7 +4,7 @@ function Charts(ID) {
 
     // Read in data
     d3.json("Data/samples.json").then((data)=> {
-        console.log(data)
+        // console.log(data)
      
         // Filter down to ID data 
         var samp = data.samples.filter(sampleName => sampleName.id.toString() == ID)[0]
@@ -23,6 +23,12 @@ function Charts(ID) {
         // Get labels
         var otulabels = samp.otu_labels.slice(0, 10);
         console.log(otulabels)
+
+        // Get wash frequency
+        var metadata = data.metadata.filter(md => md.id == ID)[0]
+        console.log(metadata)
+        var wfreq = metadata.wfreq
+        console.log(wfreq)
 
         //----------------------------------------------------------------
 
@@ -52,38 +58,36 @@ function Charts(ID) {
         Plotly.newPlot("bubble", bubble);
 
         //----------------------------------------------------------------
-
-        // Get wash frequency
-        var metadata = data.metadata.filter(md => md.id == ID)[0]
-        console.log(metadata)
-        var wfreq = metadata.wfreq
-        console.log(wfreq)
-
-        //----------------------------------------------------------------
         
         // Create gauge
-        var gauge = [
-            {
+        var gauge = [{
               domain: { x: [0, 1], y: [0, 1] },
               value: wfreq,
               title: { text: "Wash Frequency" },
               type: "indicator",
               mode: "gauge+number",
+              bgcolor: "lavender",
               gauge: {
-                axis: { range: [null, 9] },
+                axis: { range: [0, 9], tickwidth: 1, tickcolor: "lavender"  },
+                bar:{color: 'black'},
                 steps: [
-                  { range: [0, 1], color: "lightgreen2" },
-                  { range: [1, 2], color: "lightgreen1" }
-                ],
-                threshold: {
-                  line: { color: "red", width: 4 },
-                  thickness: 0.75,
-                  value: 490
-                }
-              }
+                  { range: [0, 1], color: "HoneyDew" },
+                  { range: [1, 2], color: "palegreen" },
+                  { range: [2, 3], color: "lightgreen" },
+                  { range: [3, 4], color: "limegreen" },
+                  { range: [4, 5], color: "mediumseagreen" },
+                  { range: [5, 6], color: "seagreen" },
+                  { range: [6, 7], color: "green" },
+                  { range: [7, 8], color: "green" },
+                  { range: [8, 9], color: "darkslategray" }],
+              },
+              threshold: {
+                line: { color: "gray", width: 4 },
+                thickness: 0.75,
+                value: wfreq
+              },
             }
           ];
-          
           var layout = { width: 600, height: 450, margin: { t: 0, b: 0 } };
           Plotly.newPlot('gauge', gauge, layout);
     });
